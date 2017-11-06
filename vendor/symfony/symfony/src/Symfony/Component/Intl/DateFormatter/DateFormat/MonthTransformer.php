@@ -59,6 +59,9 @@ class MonthTransformer extends Transformer
      */
     protected static $flippedShortMonths = array();
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         if (0 === count(self::$shortMonths)) {

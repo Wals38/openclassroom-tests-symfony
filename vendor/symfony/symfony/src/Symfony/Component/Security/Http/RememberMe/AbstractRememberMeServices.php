@@ -44,6 +44,8 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
     private $userProviders;
 
     /**
+     * Constructor.
+     *
      * @param array           $userProviders
      * @param string          $secret
      * @param string          $providerKey
@@ -317,6 +319,6 @@ abstract class AbstractRememberMeServices implements RememberMeServicesInterface
             $this->logger->debug('Did not send remember-me cookie.', array('parameter' => $this->options['remember_me_parameter']));
         }
 
-        return 'true' === $parameter || 'on' === $parameter || '1' === $parameter || 'yes' === $parameter || true === $parameter;
+        return $parameter === 'true' || $parameter === 'on' || $parameter === '1' || $parameter === 'yes' || $parameter === true;
     }
 }

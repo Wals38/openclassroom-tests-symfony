@@ -149,7 +149,11 @@ class ExpressionLanguage
 
     protected function registerFunctions()
     {
-        $this->addFunction(ExpressionFunction::fromPhp('constant'));
+        $this->register('constant', function ($constant) {
+            return sprintf('constant(%s)', $constant);
+        }, function (array $values, $constant) {
+            return constant($constant);
+        });
     }
 
     private function getLexer()

@@ -140,8 +140,6 @@ class Workflow
 
             $this->markingStore->setMarking($subject, $marking);
 
-            $this->entered($subject, $transition, $marking);
-
             $this->announce($subject, $transition, $marking);
         }
 
@@ -214,7 +212,7 @@ class Workflow
             return;
         }
 
-        $event = new GuardEvent($subject, $marking, $transition, $this->name);
+        $event = new GuardEvent($subject, $marking, $transition);
 
         $this->dispatcher->dispatch('workflow.guard', $event);
         $this->dispatcher->dispatch(sprintf('workflow.%s.guard', $this->name), $event);
@@ -228,7 +226,7 @@ class Workflow
         $places = $transition->getFroms();
 
         if (null !== $this->dispatcher) {
-            $event = new Event($subject, $marking, $transition, $this->name);
+            $event = new Event($subject, $marking, $transition);
 
             $this->dispatcher->dispatch('workflow.leave', $event);
             $this->dispatcher->dispatch(sprintf('workflow.%s.leave', $this->name), $event);
@@ -249,7 +247,7 @@ class Workflow
             return;
         }
 
-        $event = new Event($subject, $marking, $transition, $this->name);
+        $event = new Event($subject, $marking, $transition);
 
         $this->dispatcher->dispatch('workflow.transition', $event);
         $this->dispatcher->dispatch(sprintf('workflow.%s.transition', $this->name), $event);
@@ -261,7 +259,7 @@ class Workflow
         $places = $transition->getTos();
 
         if (null !== $this->dispatcher) {
-            $event = new Event($subject, $marking, $transition, $this->name);
+            $event = new Event($subject, $marking, $transition);
 
             $this->dispatcher->dispatch('workflow.enter', $event);
             $this->dispatcher->dispatch(sprintf('workflow.%s.enter', $this->name), $event);
@@ -273,22 +271,6 @@ class Workflow
 
         foreach ($places as $place) {
             $marking->mark($place);
-        }
-    }
-
-    private function entered($subject, Transition $transition, Marking $marking)
-    {
-        if (null === $this->dispatcher) {
-            return;
-        }
-
-        $event = new Event($subject, $marking, $transition, $this->name);
-
-        $this->dispatcher->dispatch('workflow.entered', $event);
-        $this->dispatcher->dispatch(sprintf('workflow.%s.entered', $this->name), $event);
-
-        foreach ($transition->getTos() as $place) {
-            $this->dispatcher->dispatch(sprintf('workflow.%s.entered.%s', $this->name, $place), $event);
         }
     }
 

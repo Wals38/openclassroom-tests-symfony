@@ -21,10 +21,6 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 class CsvEncoder implements EncoderInterface, DecoderInterface
 {
     const FORMAT = 'csv';
-    const DELIMITER_KEY = 'csv_delimiter';
-    const ENCLOSURE_KEY = 'csv_enclosure';
-    const ESCAPE_CHAR_KEY = 'csv_escape_char';
-    const KEY_SEPARATOR_KEY = 'csv_key_separator';
 
     private $delimiter;
     private $enclosure;
@@ -69,21 +65,19 @@ class CsvEncoder implements EncoderInterface, DecoderInterface
             }
         }
 
-        list($delimiter, $enclosure, $escapeChar, $keySeparator) = $this->getCsvOptions($context);
-
         $headers = null;
         foreach ($data as $value) {
             $result = array();
-            $this->flatten($value, $result, $keySeparator);
+            $this->flatten($value, $result);
 
             if (null === $headers) {
                 $headers = array_keys($result);
-                fputcsv($handle, $headers, $delimiter, $enclosure, $escapeChar);
+                fputcsv($handle, $headers, $this->delimiter, $this->enclosure, $this->escapeChar);
             } elseif (array_keys($result) !== $headers) {
                 throw new InvalidArgumentException('To use the CSV encoder, each line in the data array must have the same structure. You may want to use a custom normalizer class to normalize the data format before passing it to the CSV encoder.');
             }
 
-            fputcsv($handle, $result, $delimiter, $enclosure, $escapeChar);
+            fputcsv($handle, $result, $this->delimiter, $this->enclosure, $this->escapeChar);
         }
 
         rewind($handle);
@@ -114,16 +108,14 @@ class CsvEncoder implements EncoderInterface, DecoderInterface
         $nbHeaders = 0;
         $result = array();
 
-        list($delimiter, $enclosure, $escapeChar, $keySeparator) = $this->getCsvOptions($context);
-
-        while (false !== ($cols = fgetcsv($handle, 0, $delimiter, $enclosure, $escapeChar))) {
+        while (false !== ($cols = fgetcsv($handle, 0, $this->delimiter, $this->enclosure, $this->escapeChar))) {
             $nbCols = count($cols);
 
             if (null === $headers) {
                 $nbHeaders = $nbCols;
 
                 foreach ($cols as $col) {
-                    $headers[] = explode($keySeparator, $col);
+                    $headers[] = explode($this->keySeparator, $col);
                 }
 
                 continue;
@@ -174,27 +166,16 @@ class CsvEncoder implements EncoderInterface, DecoderInterface
      *
      * @param array  $array
      * @param array  $result
-     * @param string $keySeparator
      * @param string $parentKey
      */
-    private function flatten(array $array, array &$result, $keySeparator, $parentKey = '')
+    private function flatten(array $array, array &$result, $parentKey = '')
     {
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $this->flatten($value, $result, $keySeparator, $parentKey.$key.$keySeparator);
+                $this->flatten($value, $result, $parentKey.$key.$this->keySeparator);
             } else {
                 $result[$parentKey.$key] = $value;
             }
         }
-    }
-
-    private function getCsvOptions(array $context)
-    {
-        $delimiter = isset($context[self::DELIMITER_KEY]) ? $context[self::DELIMITER_KEY] : $this->delimiter;
-        $enclosure = isset($context[self::ENCLOSURE_KEY]) ? $context[self::ENCLOSURE_KEY] : $this->enclosure;
-        $escapeChar = isset($context[self::ESCAPE_CHAR_KEY]) ? $context[self::ESCAPE_CHAR_KEY] : $this->escapeChar;
-        $keySeparator = isset($context[self::KEY_SEPARATOR_KEY]) ? $context[self::KEY_SEPARATOR_KEY] : $this->keySeparator;
-
-        return array($delimiter, $enclosure, $escapeChar, $keySeparator);
     }
 }

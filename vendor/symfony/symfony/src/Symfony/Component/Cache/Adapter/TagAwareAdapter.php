@@ -25,7 +25,6 @@ class TagAwareAdapter implements TagAwareAdapterInterface
     private $itemsAdapter;
     private $deferred = array();
     private $createCacheItem;
-    private $setCacheItemTags;
     private $getTagsByKey;
     private $invalidateTags;
     private $tagsAdapter;
@@ -39,30 +38,11 @@ class TagAwareAdapter implements TagAwareAdapterInterface
                 $item = new CacheItem();
                 $item->key = $key;
                 $item->value = $value;
+                $item->isHit = false;
                 $item->defaultLifetime = $protoItem->defaultLifetime;
                 $item->expiry = $protoItem->expiry;
                 $item->innerItem = $protoItem->innerItem;
                 $item->poolHash = $protoItem->poolHash;
-
-                return $item;
-            },
-            null,
-            CacheItem::class
-        );
-        $this->setCacheItemTags = \Closure::bind(
-            function (CacheItem $item, $key, array &$itemTags) {
-                if (!$item->isHit) {
-                    return $item;
-                }
-                if (isset($itemTags[$key])) {
-                    foreach ($itemTags[$key] as $tag => $version) {
-                        $item->prevTags[$tag] = $tag;
-                    }
-                    unset($itemTags[$key]);
-                } else {
-                    $item->value = null;
-                    $item->isHit = false;
-                }
 
                 return $item;
             },
@@ -250,12 +230,19 @@ class TagAwareAdapter implements TagAwareAdapterInterface
 
             $f = $this->getTagsByKey;
             $tagsByKey = $f($items);
-            $this->deferred = array();
+            $deletedTags = $this->deferred = array();
             $tagVersions = $this->getTagVersions($tagsByKey);
             $f = $this->createCacheItem;
 
             foreach ($tagsByKey as $key => $tags) {
-                $this->itemsAdapter->saveDeferred($f(static::TAGS_PREFIX.$key, array_intersect_key($tagVersions, $tags), $items[$key]));
+                if ($tags) {
+                    $this->itemsAdapter->saveDeferred($f(static::TAGS_PREFIX.$key, array_intersect_key($tagVersions, $tags), $items[$key]));
+                } else {
+                    $deletedTags[] = static::TAGS_PREFIX.$key;
+                }
+            }
+            if ($deletedTags) {
+                $this->itemsAdapter->deleteItems($deletedTags);
             }
         }
 
@@ -269,12 +256,12 @@ class TagAwareAdapter implements TagAwareAdapterInterface
 
     private function generateItems($items, array $tagKeys)
     {
-        $bufferedItems = $itemTags = array();
-        $f = $this->setCacheItemTags;
+        $bufferedItems = $itemTags = $invalidKeys = array();
+        $f = $this->createCacheItem;
 
         foreach ($items as $key => $item) {
             if (!$tagKeys) {
-                yield $key => $f($item, static::TAGS_PREFIX.$key, $itemTags);
+                yield $key => isset($invalidKeys[static::TAGS_PREFIX.$key]) ? $f($key, null, $item) : $item;
                 continue;
             }
             if (!isset($tagKeys[$key])) {
@@ -283,23 +270,24 @@ class TagAwareAdapter implements TagAwareAdapterInterface
             }
 
             unset($tagKeys[$key]);
-            $itemTags[$key] = $item->get() ?: array();
-
+            if ($tags = $item->get()) {
+                $itemTags[$key] = $tags;
+            }
             if (!$tagKeys) {
                 $tagVersions = $this->getTagVersions($itemTags);
 
                 foreach ($itemTags as $key => $tags) {
                     foreach ($tags as $tag => $version) {
                         if ($tagVersions[$tag] !== $version) {
-                            unset($itemTags[$key]);
+                            $invalidKeys[$key] = true;
                             continue 2;
                         }
                     }
                 }
-                $tagVersions = $tagKeys = null;
+                $itemTags = $tagVersions = $tagKeys = null;
 
                 foreach ($bufferedItems as $key => $item) {
-                    yield $key => $f($item, static::TAGS_PREFIX.$key, $itemTags);
+                    yield $key => isset($invalidKeys[static::TAGS_PREFIX.$key]) ? $f($key, null, $item) : $item;
                 }
                 $bufferedItems = null;
             }

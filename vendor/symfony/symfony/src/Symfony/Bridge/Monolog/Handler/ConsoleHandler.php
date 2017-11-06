@@ -57,6 +57,8 @@ class ConsoleHandler extends AbstractProcessingHandler implements EventSubscribe
     );
 
     /**
+     * Constructor.
+     *
      * @param OutputInterface|null $output            The console output to use (the handler remains disabled when passing null
      *                                                until the output is set, e.g. by using console events)
      * @param bool                 $bubble            Whether the messages that are handled can bubble up the stack
@@ -162,14 +164,7 @@ class ConsoleHandler extends AbstractProcessingHandler implements EventSubscribe
      */
     protected function getDefaultFormatter()
     {
-        if (!$this->output) {
-            return new ConsoleFormatter();
-        }
-
-        return new ConsoleFormatter(array(
-            'colors' => $this->output->isDecorated(),
-            'multiline' => OutputInterface::VERBOSITY_DEBUG <= $this->output->getVerbosity(),
-        ));
+        return new ConsoleFormatter();
     }
 
     /**

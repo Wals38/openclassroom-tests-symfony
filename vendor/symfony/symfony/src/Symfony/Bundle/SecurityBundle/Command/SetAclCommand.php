@@ -120,7 +120,7 @@ EOF
             foreach ($userOption as $user) {
                 $data = explode(':', $user, 2);
 
-                if (1 === count($data)) {
+                if (count($data) === 1) {
                     throw new \InvalidArgumentException('The user must follow the format "Acme/MyUser:username".');
                 }
 

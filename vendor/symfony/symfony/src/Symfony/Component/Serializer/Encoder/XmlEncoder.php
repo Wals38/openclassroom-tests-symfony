@@ -23,8 +23,6 @@ use Symfony\Component\Serializer\Exception\UnexpectedValueException;
  */
 class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, DecoderInterface, NormalizationAwareInterface
 {
-    const FORMAT = 'xml';
-
     /**
      * @var \DOMDocument
      */
@@ -99,10 +97,10 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
 
         $rootNode = null;
         foreach ($dom->childNodes as $child) {
-            if (XML_DOCUMENT_TYPE_NODE === $child->nodeType) {
+            if ($child->nodeType === XML_DOCUMENT_TYPE_NODE) {
                 throw new UnexpectedValueException('Document types are not allowed.');
             }
-            if (!$rootNode && XML_PI_NODE !== $child->nodeType) {
+            if (!$rootNode && $child->nodeType !== XML_PI_NODE) {
                 $rootNode = $child;
             }
         }
@@ -145,7 +143,7 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
      */
     public function supportsEncoding($format)
     {
-        return self::FORMAT === $format;
+        return 'xml' === $format;
     }
 
     /**
@@ -153,7 +151,7 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
      */
     public function supportsDecoding($format)
     {
-        return self::FORMAT === $format;
+        return 'xml' === $format;
     }
 
     /**
@@ -344,7 +342,7 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
         $value = array();
 
         foreach ($node->childNodes as $subnode) {
-            if (XML_PI_NODE === $subnode->nodeType) {
+            if ($subnode->nodeType === XML_PI_NODE) {
                 continue;
             }
 
@@ -393,7 +391,7 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
                         $data = $this->serializer->normalize($data, $this->format, $this->context);
                     }
                     $parentNode->setAttribute($attributeName, $data);
-                } elseif ('#' === $key) {
+                } elseif ($key === '#') {
                     $append = $this->selectNodeType($parentNode, $data);
                 } elseif (is_array($data) && false === is_numeric($key)) {
                     // Is this array fully numeric keys?
@@ -411,7 +409,7 @@ class XmlEncoder extends SerializerAwareEncoder implements EncoderInterface, Dec
                     }
                 } elseif (is_numeric($key) || !$this->isElementNameValid($key)) {
                     $append = $this->appendNode($parentNode, $data, 'item', $key);
-                } elseif (null !== $data || !isset($this->context['remove_empty_tags']) || false === $this->context['remove_empty_tags']) {
+                } else {
                     $append = $this->appendNode($parentNode, $data, $key);
                 }
             }

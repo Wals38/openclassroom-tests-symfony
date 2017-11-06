@@ -28,6 +28,8 @@ class TemplateNameParser extends BaseTemplateNameParser
     protected $cache = array();
 
     /**
+     * Constructor.
+     *
      * @param KernelInterface $kernel A KernelInterface instance
      */
     public function __construct(KernelInterface $kernel)

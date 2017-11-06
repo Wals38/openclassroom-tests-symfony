@@ -12,8 +12,6 @@
 namespace Symfony\Component\Workflow;
 
 use Symfony\Component\Workflow\Exception\InvalidArgumentException;
-use Symfony\Component\Workflow\SupportStrategy\ClassInstanceSupportStrategy;
-use Symfony\Component\Workflow\SupportStrategy\SupportStrategyInterface;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -24,18 +22,12 @@ class Registry
     private $workflows = array();
 
     /**
-     * @param Workflow                        $workflow
-     * @param string|SupportStrategyInterface $supportStrategy
+     * @param Workflow $workflow
+     * @param string   $className
      */
-    public function add(Workflow $workflow, $supportStrategy)
+    public function add(Workflow $workflow, $className)
     {
-        if (!$supportStrategy instanceof SupportStrategyInterface) {
-            @trigger_error('Support of class name string was deprecated after version 3.2 and won\'t work anymore in 4.0.', E_USER_DEPRECATED);
-
-            $supportStrategy = new ClassInstanceSupportStrategy($supportStrategy);
-        }
-
-        $this->workflows[] = array($workflow, $supportStrategy);
+        $this->workflows[] = array($workflow, $className);
     }
 
     /**
@@ -48,8 +40,8 @@ class Registry
     {
         $matched = null;
 
-        foreach ($this->workflows as list($workflow, $supportStrategy)) {
-            if ($this->supports($workflow, $supportStrategy, $subject, $workflowName)) {
+        foreach ($this->workflows as list($workflow, $className)) {
+            if ($this->supports($workflow, $className, $subject, $workflowName)) {
                 if ($matched) {
                     throw new InvalidArgumentException('At least two workflows match this subject. Set a different name on each and use the second (name) argument of this method.');
                 }
@@ -64,12 +56,16 @@ class Registry
         return $matched;
     }
 
-    private function supports(Workflow $workflow, $supportStrategy, $subject, $workflowName)
+    private function supports(Workflow $workflow, $className, $subject, $name)
     {
-        if (null !== $workflowName && $workflowName !== $workflow->getName()) {
+        if (!$subject instanceof $className) {
             return false;
         }
 
-        return $supportStrategy->supports($workflow, $subject);
+        if (null === $name) {
+            return true;
+        }
+
+        return $name === $workflow->getName();
     }
 }

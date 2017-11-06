@@ -151,7 +151,7 @@ abstract class DoctrineType extends AbstractType
                     $entityLoader
                 );
 
-                if (null !== $hash) {
+                if ($hash !== null) {
                     $this->choiceLoaders[$hash] = $doctrineChoiceLoader;
                 }
 

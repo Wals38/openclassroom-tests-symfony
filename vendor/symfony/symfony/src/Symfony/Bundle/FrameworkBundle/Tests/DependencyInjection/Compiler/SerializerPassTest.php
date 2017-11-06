@@ -19,8 +19,6 @@ use Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\SerializerPass;
 /**
  * Tests for the SerializerPass class.
  *
- * @group legacy
- *
  * @author Javier Lopez <f12loalf@gmail.com>
  */
 class SerializerPassTest extends TestCase

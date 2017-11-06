@@ -30,6 +30,8 @@ class DelegatingLoader extends BaseDelegatingLoader
     private $loading = false;
 
     /**
+     * Constructor.
+     *
      * @param ControllerNameParser    $parser   A ControllerNameParser instance
      * @param LoaderResolverInterface $resolver A LoaderResolverInterface instance
      */
@@ -62,7 +64,7 @@ class DelegatingLoader extends BaseDelegatingLoader
             // - this handles the case and prevents the second fatal error
             //   by triggering an exception beforehand.
 
-            throw new FileLoaderLoadException($resource, null, null, null, $type);
+            throw new FileLoaderLoadException($resource);
         }
         $this->loading = true;
 
@@ -73,7 +75,7 @@ class DelegatingLoader extends BaseDelegatingLoader
         }
 
         foreach ($collection->all() as $route) {
-            if (!is_string($controller = $route->getDefault('_controller')) || !$controller) {
+            if (!$controller = $route->getDefault('_controller')) {
                 continue;
             }
 

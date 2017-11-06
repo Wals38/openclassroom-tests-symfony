@@ -31,6 +31,8 @@ class EnvParametersResource implements SelfCheckingResourceInterface, \Serializa
     private $variables;
 
     /**
+     * Constructor.
+     *
      * @param string $prefix
      */
     public function __construct($prefix)
@@ -70,11 +72,7 @@ class EnvParametersResource implements SelfCheckingResourceInterface, \Serializa
 
     public function unserialize($serialized)
     {
-        if (\PHP_VERSION_ID >= 70000) {
-            $unserialized = unserialize($serialized, array('allowed_classes' => false));
-        } else {
-            $unserialized = unserialize($serialized);
-        }
+        $unserialized = unserialize($serialized);
 
         $this->prefix = $unserialized['prefix'];
         $this->variables = $unserialized['variables'];

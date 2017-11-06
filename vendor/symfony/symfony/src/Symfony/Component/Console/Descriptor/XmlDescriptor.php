@@ -64,7 +64,6 @@ class XmlDescriptor extends Descriptor
 
         $commandXML->setAttribute('id', $command->getName());
         $commandXML->setAttribute('name', $command->getName());
-        $commandXML->setAttribute('hidden', $command->isHidden() ? 1 : 0);
 
         $commandXML->appendChild($usagesXML = $dom->createElement('usages'));
 
@@ -95,16 +94,16 @@ class XmlDescriptor extends Descriptor
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->appendChild($rootXml = $dom->createElement('symfony'));
 
-        if ('UNKNOWN' !== $application->getName()) {
+        if ($application->getName() !== 'UNKNOWN') {
             $rootXml->setAttribute('name', $application->getName());
-            if ('UNKNOWN' !== $application->getVersion()) {
+            if ($application->getVersion() !== 'UNKNOWN') {
                 $rootXml->setAttribute('version', $application->getVersion());
             }
         }
 
         $rootXml->appendChild($commandsXML = $dom->createElement('commands'));
 
-        $description = new ApplicationDescription($application, $namespace, true);
+        $description = new ApplicationDescription($application, $namespace);
 
         if ($namespace) {
             $commandsXML->setAttribute('namespace', $namespace);

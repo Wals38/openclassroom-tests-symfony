@@ -291,7 +291,7 @@ class ContextListenerTest extends TestCase
     {
         $session = new Session(new MockArraySessionStorage());
 
-        if (null !== $original) {
+        if ($original !== null) {
             $session->set('_security_session', $original);
         }
 

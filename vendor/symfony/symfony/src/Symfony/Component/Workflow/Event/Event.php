@@ -24,20 +24,17 @@ class Event extends BaseEvent
     private $subject;
     private $marking;
     private $transition;
-    private $workflowName;
 
     /**
      * @param object     $subject
      * @param Marking    $marking
      * @param Transition $transition
-     * @param string     $workflowName
      */
-    public function __construct($subject, Marking $marking, Transition $transition, $workflowName = 'unnamed')
+    public function __construct($subject, Marking $marking, Transition $transition)
     {
         $this->subject = $subject;
         $this->marking = $marking;
         $this->transition = $transition;
-        $this->workflowName = $workflowName;
     }
 
     public function getMarking()
@@ -53,10 +50,5 @@ class Event extends BaseEvent
     public function getTransition()
     {
         return $this->transition;
-    }
-
-    public function getWorkflowName()
-    {
-        return $this->workflowName;
     }
 }

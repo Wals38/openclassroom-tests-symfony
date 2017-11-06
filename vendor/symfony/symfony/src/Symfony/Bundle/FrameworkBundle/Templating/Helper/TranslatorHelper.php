@@ -15,6 +15,8 @@ use Symfony\Component\Templating\Helper\Helper;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
+ * TranslatorHelper.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class TranslatorHelper extends Helper
@@ -22,6 +24,8 @@ class TranslatorHelper extends Helper
     protected $translator;
 
     /**
+     * Constructor.
+     *
      * @param TranslatorInterface $translator A TranslatorInterface instance
      */
     public function __construct(TranslatorInterface $translator)

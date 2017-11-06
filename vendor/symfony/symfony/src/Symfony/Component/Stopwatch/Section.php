@@ -39,6 +39,8 @@ class Section
     private $children = array();
 
     /**
+     * Constructor.
+     *
      * @param float|null $origin Set the origin of the events in this section, use null to set their origin to their start time
      */
     public function __construct($origin = null)

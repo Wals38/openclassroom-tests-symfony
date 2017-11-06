@@ -11,8 +11,6 @@
 
 namespace Symfony\Bundle\TwigBundle;
 
-@trigger_error(sprintf('The %s class is deprecated since version 3.3 and will be removed in 4.0. Use the Twig\RuntimeLoader\ContainerRuntimeLoader class instead.', ContainerAwareRuntimeLoader::class), E_USER_DEPRECATED);
-
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig\RuntimeLoader\RuntimeLoaderInterface;
@@ -21,8 +19,6 @@ use Twig\RuntimeLoader\RuntimeLoaderInterface;
  * Loads Twig extension runtimes via the service container.
  *
  * @author Fabien Potencier <fabien@symfony.com>
- *
- * @deprecated since version 3.3, will be removed in 4.0. Use \Twig\Loader\ContainerRuntimeLoader instead.
  */
 class ContainerAwareRuntimeLoader implements RuntimeLoaderInterface
 {

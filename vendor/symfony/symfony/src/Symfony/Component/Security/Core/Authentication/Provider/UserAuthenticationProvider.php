@@ -33,6 +33,8 @@ abstract class UserAuthenticationProvider implements AuthenticationProviderInter
     private $providerKey;
 
     /**
+     * Constructor.
+     *
      * @param UserCheckerInterface $userChecker                An UserCheckerInterface interface
      * @param string               $providerKey                A provider key
      * @param bool                 $hideUserNotFoundExceptions Whether to hide user not found exception or not

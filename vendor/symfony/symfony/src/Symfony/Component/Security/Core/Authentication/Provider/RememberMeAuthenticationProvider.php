@@ -23,6 +23,8 @@ class RememberMeAuthenticationProvider implements AuthenticationProviderInterfac
     private $providerKey;
 
     /**
+     * Constructor.
+     *
      * @param UserCheckerInterface $userChecker An UserCheckerInterface interface
      * @param string               $secret      A secret
      * @param string               $providerKey A provider secret

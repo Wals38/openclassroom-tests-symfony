@@ -18,7 +18,7 @@ class CacheItemTest extends TestCase
 {
     public function testValidKey()
     {
-        $this->assertSame('foo', CacheItem::validateKey('foo'));
+        $this->assertNull(CacheItem::validateKey('foo'));
     }
 
     /**

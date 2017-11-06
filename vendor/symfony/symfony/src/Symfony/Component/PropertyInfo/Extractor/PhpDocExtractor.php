@@ -24,8 +24,6 @@ use Symfony\Component\PropertyInfo\Util\PhpDocTypeHelper;
  * Extracts data using a PHPDoc parser.
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
- *
- * @final since version 3.3
  */
 class PhpDocExtractor implements PropertyDescriptionExtractorInterface, PropertyTypeExtractorInterface
 {
@@ -217,7 +215,7 @@ class PhpDocExtractor implements PropertyDescriptionExtractorInterface, Property
      */
     private function getDocBlockFromMethod($class, $ucFirstProperty, $type)
     {
-        $prefixes = self::ACCESSOR === $type ? ReflectionExtractor::$accessorPrefixes : ReflectionExtractor::$mutatorPrefixes;
+        $prefixes = $type === self::ACCESSOR ? ReflectionExtractor::$accessorPrefixes : ReflectionExtractor::$mutatorPrefixes;
         $prefix = null;
 
         foreach ($prefixes as $prefix) {

@@ -22,6 +22,8 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
+ * Application.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class Application extends BaseApplication
@@ -30,6 +32,8 @@ class Application extends BaseApplication
     private $commandsRegistered = false;
 
     /**
+     * Constructor.
+     *
      * @param KernelInterface $kernel A KernelInterface instance
      */
     public function __construct(KernelInterface $kernel)

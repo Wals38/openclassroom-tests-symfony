@@ -16,6 +16,8 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
+ * InteractiveLoginEvent.
+ *
  * @author Fabien Potencier <fabien@symfony.com>
  */
 class InteractiveLoginEvent extends Event
@@ -24,6 +26,8 @@ class InteractiveLoginEvent extends Event
     private $authenticationToken;
 
     /**
+     * Constructor.
+     *
      * @param Request        $request             A Request instance
      * @param TokenInterface $authenticationToken A TokenInterface instance
      */

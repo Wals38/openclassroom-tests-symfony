@@ -25,6 +25,8 @@ class ActionsHelper extends Helper
     private $handler;
 
     /**
+     * Constructor.
+     *
      * @param FragmentHandler $handler A FragmentHandler instance
      */
     public function __construct(FragmentHandler $handler)

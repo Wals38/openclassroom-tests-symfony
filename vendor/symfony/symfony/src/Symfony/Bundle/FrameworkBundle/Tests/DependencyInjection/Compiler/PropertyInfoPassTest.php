@@ -13,13 +13,9 @@ namespace Symfony\Bundle\FrameworkBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\PropertyInfoPass;
-use Symfony\Component\DependencyInjection\Argument\IteratorArgument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * @group legacy
- */
 class PropertyInfoPassTest extends TestCase
 {
     /**
@@ -37,11 +33,11 @@ class PropertyInfoPassTest extends TestCase
         $propertyInfoPass = new PropertyInfoPass();
         $propertyInfoPass->process($container);
 
-        $expected = new IteratorArgument(array(
+        $expected = array(
             new Reference('n1'),
             new Reference('n2'),
             new Reference('n3'),
-        ));
+        );
         $this->assertEquals($expected, $definition->getArgument($index));
     }
 

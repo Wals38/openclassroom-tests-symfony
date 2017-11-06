@@ -37,6 +37,8 @@ class FullTransformer
     private $timezone;
 
     /**
+     * Constructor.
+     *
      * @param string $pattern  The pattern to be used to format and/or parse values
      * @param string $timezone The timezone to perform the date/time calculations
      */
@@ -65,7 +67,7 @@ class FullTransformer
             'k' => new Hour2401Transformer(),
             'm' => new MinuteTransformer(),
             's' => new SecondTransformer(),
-            'z' => new TimezoneTransformer(),
+            'z' => new TimeZoneTransformer(),
         );
     }
 

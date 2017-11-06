@@ -83,12 +83,14 @@ EOF
         $twig = $this->getTwigEnvironment();
 
         if (null === $twig) {
-            throw new \RuntimeException('The Twig environment needs to be set.');
+            $io->error('The Twig environment needs to be set.');
+
+            return 1;
         }
 
         $types = array('functions', 'filters', 'tests', 'globals');
 
-        if ('json' === $input->getOption('format')) {
+        if ($input->getOption('format') === 'json') {
             $data = array();
             foreach ($types as $type) {
                 foreach ($twig->{'get'.ucfirst($type)}() as $name => $entity) {
@@ -126,13 +128,13 @@ EOF
 
     private function getMetadata($type, $entity)
     {
-        if ('globals' === $type) {
+        if ($type === 'globals') {
             return $entity;
         }
-        if ('tests' === $type) {
+        if ($type === 'tests') {
             return;
         }
-        if ('functions' === $type || 'filters' === $type) {
+        if ($type === 'functions' || $type === 'filters') {
             $cb = $entity->getCallable();
             if (null === $cb) {
                 return;
@@ -162,7 +164,7 @@ EOF
                 array_shift($args);
             }
 
-            if ('filters' === $type) {
+            if ($type === 'filters') {
                 // remove the value the filter is applied on
                 array_shift($args);
             }
@@ -182,20 +184,20 @@ EOF
 
     private function getPrettyMetadata($type, $entity)
     {
-        if ('tests' === $type) {
+        if ($type === 'tests') {
             return '';
         }
 
         try {
             $meta = $this->getMetadata($type, $entity);
-            if (null === $meta) {
+            if ($meta === null) {
                 return '(unknown?)';
             }
         } catch (\UnexpectedValueException $e) {
             return ' <error>'.$e->getMessage().'</error>';
         }
 
-        if ('globals' === $type) {
+        if ($type === 'globals') {
             if (is_object($meta)) {
                 return ' = object('.get_class($meta).')';
             }
@@ -203,11 +205,11 @@ EOF
             return ' = '.substr(@json_encode($meta), 0, 50);
         }
 
-        if ('functions' === $type) {
+        if ($type === 'functions') {
             return '('.implode(', ', $meta).')';
         }
 
-        if ('filters' === $type) {
+        if ($type === 'filters') {
             return $meta ? '('.implode(', ', $meta).')' : '';
         }
     }

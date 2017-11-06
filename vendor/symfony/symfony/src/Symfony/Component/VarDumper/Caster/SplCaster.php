@@ -40,12 +40,12 @@ class SplCaster
             $prefix.'storage' => $c->getArrayCopy(),
         );
 
-        if ('ArrayObject' === $class) {
+        if ($class === 'ArrayObject') {
             $a = $b;
         } else {
             if (!($flags & \ArrayObject::STD_PROP_LIST)) {
                 $c->setFlags(\ArrayObject::STD_PROP_LIST);
-                $a = Caster::castObject($c, $class);
+                $a = Caster::castObject($c, new \ReflectionClass($class));
                 $c->setFlags($flags);
             }
 

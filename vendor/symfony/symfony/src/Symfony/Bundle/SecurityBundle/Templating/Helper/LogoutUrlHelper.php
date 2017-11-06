@@ -24,6 +24,11 @@ class LogoutUrlHelper extends Helper
 {
     private $generator;
 
+    /**
+     * Constructor.
+     *
+     * @param LogoutUrlGenerator $generator A LogoutUrlGenerator instance
+     */
     public function __construct(LogoutUrlGenerator $generator)
     {
         $this->generator = $generator;

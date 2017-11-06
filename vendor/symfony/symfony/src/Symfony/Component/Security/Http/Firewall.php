@@ -34,6 +34,8 @@ class Firewall implements EventSubscriberInterface
     private $exceptionListeners;
 
     /**
+     * Constructor.
+     *
      * @param FirewallMapInterface     $map        A FirewallMapInterface instance
      * @param EventDispatcherInterface $dispatcher An EventDispatcherInterface instance
      */

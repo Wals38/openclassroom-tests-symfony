@@ -34,6 +34,8 @@ class TypeGuess extends Guess
     private $options;
 
     /**
+     * Constructor.
+     *
      * @param string $type       The guessed field type
      * @param array  $options    The options for creating instances of the
      *                           guessed class

@@ -32,6 +32,8 @@ class DaoAuthenticationProvider extends UserAuthenticationProvider
     private $userProvider;
 
     /**
+     * Constructor.
+     *
      * @param UserProviderInterface   $userProvider               An UserProviderInterface instance
      * @param UserCheckerInterface    $userChecker                An UserCheckerInterface instance
      * @param string                  $providerKey                The provider key

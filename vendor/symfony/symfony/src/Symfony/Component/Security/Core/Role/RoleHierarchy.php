@@ -22,6 +22,8 @@ class RoleHierarchy implements RoleHierarchyInterface
     protected $map;
 
     /**
+     * Constructor.
+     *
      * @param array $hierarchy An array defining the hierarchy
      */
     public function __construct(array $hierarchy)

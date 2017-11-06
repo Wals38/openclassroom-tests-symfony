@@ -1,11 +1,6 @@
 CHANGELOG
 =========
 
-3.3.0
------
-
- * Improved the console handler output formatting by adding var-dumper support
-
 3.0.0
 -----
 

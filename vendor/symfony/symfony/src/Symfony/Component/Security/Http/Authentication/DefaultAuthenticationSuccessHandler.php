@@ -40,6 +40,8 @@ class DefaultAuthenticationSuccessHandler implements AuthenticationSuccessHandle
     );
 
     /**
+     * Constructor.
+     *
      * @param HttpUtils $httpUtils
      * @param array     $options   Options for processing a successful authentication attempt
      */
@@ -120,11 +122,12 @@ class DefaultAuthenticationSuccessHandler implements AuthenticationSuccessHandle
             return $targetUrl;
         }
 
-        if ($this->options['use_referer'] && $targetUrl = $request->headers->get('Referer')) {
+        if ($this->options['use_referer']) {
+            $targetUrl = $request->headers->get('Referer');
             if (false !== $pos = strpos($targetUrl, '?')) {
                 $targetUrl = substr($targetUrl, 0, $pos);
             }
-            if ($targetUrl && $targetUrl !== $this->httpUtils->generateUri($request, $this->options['login_path'])) {
+            if ($targetUrl !== $this->httpUtils->generateUri($request, $this->options['login_path'])) {
                 return $targetUrl;
             }
         }

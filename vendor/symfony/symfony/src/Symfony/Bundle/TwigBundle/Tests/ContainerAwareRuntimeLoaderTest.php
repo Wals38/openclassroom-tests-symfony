@@ -15,9 +15,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Bundle\TwigBundle\ContainerAwareRuntimeLoader;
 
-/**
- * @group legacy
- */
 class ContainerAwareRuntimeLoaderTest extends TestCase
 {
     public function testLoad()

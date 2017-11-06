@@ -39,6 +39,8 @@ class StopwatchEvent
     private $started = array();
 
     /**
+     * Constructor.
+     *
      * @param float       $origin   The origin time in milliseconds
      * @param string|null $category The event category or null to use the default
      *

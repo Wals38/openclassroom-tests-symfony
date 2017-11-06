@@ -22,7 +22,6 @@ class PhpArrayAdapterTest extends AdapterTestCase
 {
     protected $skippedTests = array(
         'testBasicUsage' => 'PhpArrayAdapter is read-only.',
-        'testBasicUsageWithLongKey' => 'PhpArrayAdapter is read-only.',
         'testClear' => 'PhpArrayAdapter is read-only.',
         'testClearWithDeferredItems' => 'PhpArrayAdapter is read-only.',
         'testDeleteItem' => 'PhpArrayAdapter is read-only.',
@@ -52,7 +51,7 @@ class PhpArrayAdapterTest extends AdapterTestCase
         'testDefaultLifeTime' => 'PhpArrayAdapter does not allow configuring a default lifetime.',
     );
 
-    protected static $file;
+    private static $file;
 
     public static function setupBeforeClass()
     {

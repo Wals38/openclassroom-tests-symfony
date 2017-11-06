@@ -45,6 +45,8 @@ abstract class Client
     private $isMainRequest = true;
 
     /**
+     * Constructor.
+     *
      * @param array     $server    The server parameters (equivalent of $_SERVER)
      * @param History   $history   A History instance to store the browser history
      * @param CookieJar $cookieJar A CookieJar instance to store the cookies
@@ -473,7 +475,7 @@ abstract class Client
 
         $request = $this->internalRequest;
 
-        if (in_array($this->internalResponse->getStatus(), array(301, 302, 303))) {
+        if (in_array($this->internalResponse->getStatus(), array(302, 303))) {
             $method = 'GET';
             $files = array();
             $content = null;

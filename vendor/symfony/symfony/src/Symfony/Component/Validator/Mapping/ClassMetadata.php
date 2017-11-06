@@ -339,10 +339,6 @@ class ClassMetadata extends GenericMetadata implements ClassMetadataInterface
      */
     public function mergeConstraints(ClassMetadata $source)
     {
-        if ($source->isGroupSequenceProvider()) {
-            $this->setGroupSequenceProvider(true);
-        }
-
         foreach ($source->getConstraints() as $constraint) {
             $this->addConstraint(clone $constraint);
         }

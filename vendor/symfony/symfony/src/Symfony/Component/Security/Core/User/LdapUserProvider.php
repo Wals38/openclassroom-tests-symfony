@@ -115,7 +115,7 @@ class LdapUserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        return 'Symfony\Component\Security\Core\User\User' === $class;
+        return $class === 'Symfony\Component\Security\Core\User\User';
     }
 
     /**

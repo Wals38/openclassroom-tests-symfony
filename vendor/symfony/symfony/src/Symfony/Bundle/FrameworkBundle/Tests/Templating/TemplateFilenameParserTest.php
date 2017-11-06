@@ -36,7 +36,7 @@ class TemplateFilenameParserTest extends TestCase
     {
         $template = $this->parser->parse($file);
 
-        if (false === $ref) {
+        if ($ref === false) {
             $this->assertFalse($template);
         } else {
             $this->assertEquals($template->getLogicalName(), $ref->getLogicalName());

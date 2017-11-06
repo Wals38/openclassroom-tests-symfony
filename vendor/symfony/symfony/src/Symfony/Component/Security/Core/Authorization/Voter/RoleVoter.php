@@ -24,6 +24,8 @@ class RoleVoter implements VoterInterface
     private $prefix;
 
     /**
+     * Constructor.
+     *
      * @param string $prefix The role prefix
      */
     public function __construct($prefix = 'ROLE_')

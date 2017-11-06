@@ -31,7 +31,7 @@ class TokenBasedRememberMeServices extends AbstractRememberMeServices
      */
     protected function processAutoLoginCookie(array $cookieParts, Request $request)
     {
-        if (4 !== count($cookieParts)) {
+        if (count($cookieParts) !== 4) {
             throw new AuthenticationException('The cookie is invalid.');
         }
 

@@ -63,14 +63,17 @@ class SecurityDataCollectorTest extends TestCase
 
         $collector = new SecurityDataCollector($tokenStorage, $this->getRoleHierarchy());
         $collector->collect($this->getRequest(), $this->getResponse());
-        $collector->lateCollect();
 
         $this->assertTrue($collector->isEnabled());
         $this->assertTrue($collector->isAuthenticated());
-        $this->assertSame('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken', $collector->getTokenClass()->getValue());
+        $this->assertSame('Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken', $collector->getTokenClass());
         $this->assertTrue($collector->supportsRoleHierarchy());
-        $this->assertSame($normalizedRoles, $collector->getRoles()->getValue(true));
-        $this->assertSame($inheritedRoles, $collector->getInheritedRoles()->getValue(true));
+        $this->assertSame($normalizedRoles, $collector->getRoles()->getRawData()[1]);
+        if ($inheritedRoles) {
+            $this->assertSame($inheritedRoles, $collector->getInheritedRoles()->getRawData()[1]);
+        } else {
+            $this->assertSame($inheritedRoles, $collector->getInheritedRoles()->getRawData()[0][0]);
+        }
         $this->assertSame('hhamon', $collector->getUser());
     }
 
@@ -91,7 +94,6 @@ class SecurityDataCollectorTest extends TestCase
 
         $collector = new SecurityDataCollector(null, null, null, null, $firewallMap);
         $collector->collect($request, $this->getResponse());
-        $collector->lateCollect();
         $collected = $collector->getFirewall();
 
         $this->assertSame($firewallConfig->getName(), $collected['name']);
@@ -105,7 +107,7 @@ class SecurityDataCollectorTest extends TestCase
         $this->assertSame($firewallConfig->getAccessDeniedHandler(), $collected['access_denied_handler']);
         $this->assertSame($firewallConfig->getAccessDeniedUrl(), $collected['access_denied_url']);
         $this->assertSame($firewallConfig->getUserChecker(), $collected['user_checker']);
-        $this->assertSame($firewallConfig->getListeners(), $collected['listeners']->getValue());
+        $this->assertSame($firewallConfig->getListeners(), $collected['listeners']->getRawData()[0][0]);
     }
 
     public function testGetFirewallReturnsNull()

@@ -20,7 +20,7 @@ class_exists('Twig\Environment');
 /**
  * @author Bernhard Schussek <bschussek@gmail.com>
  *
- * @deprecated since version 3.2, to be removed in 4.0.
+ * @deprecated Deprecated since version 3.2, to be removed in 4.0.
  */
 interface TwigRendererEngineInterface extends FormRendererEngineInterface
 {

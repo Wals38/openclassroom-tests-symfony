@@ -50,6 +50,8 @@ class FormRenderer implements FormRendererInterface
     private $variableStack = array();
 
     /**
+     * Constructor.
+     *
      * @param FormRendererEngineInterface    $engine
      * @param CsrfTokenManagerInterface|null $csrfTokenManager
      */

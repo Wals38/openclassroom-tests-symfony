@@ -8,7 +8,7 @@
             "shared": true,
             "abstract": true,
             "autowire": false,
-            "autoconfigure": false,
+            "autowiring_types": [],
             "file": null,
             "factory_class": "Full\\Qualified\\FactoryClass",
             "factory_method": "get",
@@ -19,6 +19,10 @@
         "alias_1": {
             "service": "service_1",
             "public": true
+        },
+        "alias_2": {
+            "service": "service_2",
+            "public": false
         }
     },
     "services": {

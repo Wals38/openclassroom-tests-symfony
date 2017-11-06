@@ -29,6 +29,8 @@ class CsrfToken
     private $value;
 
     /**
+     * Constructor.
+     *
      * @param string $id    The token ID
      * @param string $value The actual token value
      */

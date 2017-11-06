@@ -22,7 +22,7 @@ use Symfony\Component\Console\Terminal;
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Chris Jones <leeked@gmail.com>
  */
-final class ProgressBar
+class ProgressBar
 {
     // options
     private $barWidth = 28;

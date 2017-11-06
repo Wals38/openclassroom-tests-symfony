@@ -127,13 +127,7 @@ class DoctrineDataCollectorTest extends TestCase
             array(null, array(), null, true),
             array(new \DateTime('2011-09-11'), array('date'), '2011-09-11', true),
             array(fopen(__FILE__, 'r'), array(), 'Resource(stream)', false),
-            array(new \stdClass(), array(), 'Object(stdClass)', false),
-            array(
-                new StringRepresentableClass(),
-                array(),
-                'Object(Symfony\Bridge\Doctrine\Tests\DataCollector\StringRepresentableClass): "string representation"',
-                false,
-            ),
+            array(new \SplFileInfo(__FILE__), array(), 'Object(SplFileInfo)', false),
         );
     }
 
@@ -166,13 +160,5 @@ class DoctrineDataCollectorTest extends TestCase
         $collector->addLogger('default', $logger);
 
         return $collector;
-    }
-}
-
-class StringRepresentableClass
-{
-    public function __toString()
-    {
-        return 'string representation';
     }
 }

@@ -31,6 +31,8 @@ class ExpressionVoter implements VoterInterface
     private $roleHierarchy;
 
     /**
+     * Constructor.
+     *
      * @param ExpressionLanguage                   $expressionLanguage
      * @param AuthenticationTrustResolverInterface $trustResolver
      * @param RoleHierarchyInterface|null          $roleHierarchy

@@ -257,8 +257,10 @@ class NumberFormatter
     );
 
     /**
+     * Constructor.
+     *
      * @param string $locale  The locale code. The only currently supported locale is "en" (or null using the default locale, i.e. "en")
-     * @param int    $style   Style of the formatting, one of the format style constants.
+     * @param int    $style   Style of the formatting, one of the format style constants
      *                        The only supported styles are NumberFormatter::DECIMAL
      *                        and NumberFormatter::CURRENCY.
      * @param string $pattern Not supported. A pattern string in case $style is NumberFormat::PATTERN_DECIMAL or
@@ -295,7 +297,7 @@ class NumberFormatter
      * Static constructor.
      *
      * @param string $locale  The locale code. The only supported locale is "en" (or null using the default locale, i.e. "en")
-     * @param int    $style   Style of the formatting, one of the format style constants.
+     * @param int    $style   Style of the formatting, one of the format style constants
      *                        The only currently supported styles are NumberFormatter::DECIMAL
      *                        and NumberFormatter::CURRENCY.
      * @param string $pattern Not supported. A pattern string in case $style is NumberFormat::PATTERN_DECIMAL or
@@ -330,7 +332,7 @@ class NumberFormatter
      */
     public function formatCurrency($value, $currency)
     {
-        if (self::DECIMAL == $this->style) {
+        if ($this->style == self::DECIMAL) {
             return $this->format($value);
         }
 
@@ -355,9 +357,9 @@ class NumberFormatter
     /**
      * Format a number.
      *
-     * @param int|float $value the value to format
-     * @param int       $type  Type of the formatting, one of the format type constants.
-     *                         Only type NumberFormatter::TYPE_DEFAULT is currently supported.
+     * @param number $value The value to format
+     * @param int    $type  Type of the formatting, one of the format type constants
+     *                      Only type NumberFormatter::TYPE_DEFAULT is currently supported.
      *
      * @return bool|string The formatted value or false on error
      *
@@ -369,13 +371,13 @@ class NumberFormatter
     public function format($value, $type = self::TYPE_DEFAULT)
     {
         // The original NumberFormatter does not support this format type
-        if (self::TYPE_CURRENCY == $type) {
+        if ($type == self::TYPE_CURRENCY) {
             trigger_error(__METHOD__.'(): Unsupported format type '.$type, \E_USER_WARNING);
 
             return false;
         }
 
-        if (self::CURRENCY == $this->style) {
+        if ($this->style == self::CURRENCY) {
             throw new NotImplementedException(sprintf(
                 '%s() method does not support the formatting of currencies (instance with CURRENCY style). %s',
                 __METHOD__, NotImplementedException::INTL_INSTALL_MESSAGE
@@ -383,7 +385,7 @@ class NumberFormatter
         }
 
         // Only the default type is supported.
-        if (self::TYPE_DEFAULT != $type) {
+        if ($type != self::TYPE_DEFAULT) {
             throw new MethodArgumentValueNotImplementedException(__METHOD__, 'type', $type, 'Only TYPE_DEFAULT is supported');
         }
 
@@ -516,9 +518,9 @@ class NumberFormatter
     /**
      * Parse a number.
      *
-     * @param string $value    the value to parse
-     * @param int    $type     Type of the formatting, one of the format type constants. NumberFormatter::TYPE_DOUBLE by default.
-     * @param int    $position offset to begin the parsing on return this value will hold the offset at which the parsing ended
+     * @param string $value    The value to parse
+     * @param int    $type     Type of the formatting, one of the format type constants. NumberFormatter::TYPE_DOUBLE by default
+     * @param int    $position Offset to begin the parsing on return this value will hold the offset at which the parsing ended
      *
      * @return int|float|false The parsed value of false on error
      *
@@ -526,7 +528,7 @@ class NumberFormatter
      */
     public function parse($value, $type = self::TYPE_DOUBLE, &$position = 0)
     {
-        if (self::TYPE_DEFAULT == $type || self::TYPE_CURRENCY == $type) {
+        if ($type == self::TYPE_DEFAULT || $type == self::TYPE_CURRENCY) {
             trigger_error(__METHOD__.'(): Unsupported format type '.$type, \E_USER_WARNING);
 
             return false;
@@ -566,10 +568,10 @@ class NumberFormatter
     /**
      * Set an attribute.
      *
-     * @param int $attr  An attribute specifier, one of the numeric attribute constants.
+     * @param int $attr  An attribute specifier, one of the numeric attribute constants
      *                   The only currently supported attributes are NumberFormatter::FRACTION_DIGITS,
      *                   NumberFormatter::GROUPING_USED and NumberFormatter::ROUNDING_MODE.
-     * @param int $value the attribute value
+     * @param int $value The attribute value
      *
      * @return bool true on success or false on failure
      *
@@ -773,7 +775,7 @@ class NumberFormatter
      */
     private function getUninitializedPrecision($value, $precision)
     {
-        if (self::CURRENCY == $this->style) {
+        if ($this->style == self::CURRENCY) {
             return $precision;
         }
 
@@ -809,11 +811,11 @@ class NumberFormatter
      */
     private function convertValueDataType($value, $type)
     {
-        if (self::TYPE_DOUBLE == $type) {
+        if ($type == self::TYPE_DOUBLE) {
             $value = (float) $value;
-        } elseif (self::TYPE_INT32 == $type) {
+        } elseif ($type == self::TYPE_INT32) {
             $value = $this->getInt32Value($value);
-        } elseif (self::TYPE_INT64 == $type) {
+        } elseif ($type == self::TYPE_INT64) {
             $value = $this->getInt64Value($value);
         }
 
