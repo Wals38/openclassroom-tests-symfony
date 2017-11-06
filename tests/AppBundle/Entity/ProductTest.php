@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Entity;
 use PHPUnit\Framework\TestCase;
 use AppBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductTest extends TestCase {
 
