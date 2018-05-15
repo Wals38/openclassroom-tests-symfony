@@ -1,4 +1,4 @@
-# Openclassroom : tests avec Symfony
+# Openclassroom : Testez et suivez l'état de votre application avec PHP
 
 A Symfony project created on [date lost].
 
